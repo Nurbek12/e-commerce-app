@@ -1,0 +1,146 @@
+syntax = "proto3";
+
+package users;
+
+import "constants.proto";
+
+enum USER_ROLES {
+    ADMIN   = 0;
+    USER    = 1;
+    COURIER = 2;
+    SELLER  = 3;
+}
+
+message User {
+    int32      id    = 1; 
+    string     phone = 5;
+    USER_ROLES role  = 7;
+
+    optional string firstName   = 2;
+    optional string lastName    = 3;
+    optional string email       = 4;
+    optional string password    = 6;
+    optional int32  totalOrders = 8;
+    optional string createdAt   = 9;
+    optional string updatedAt   = 10;
+}
+
+message SortingUsers {
+    optional constants.SORTING_VALUES id          = 1; 
+    optional constants.SORTING_VALUES firstName   = 2;
+    optional constants.SORTING_VALUES lastName    = 3;
+    optional constants.SORTING_VALUES role        = 4;
+    optional constants.SORTING_VALUES totalOrders = 5;
+    optional constants.SORTING_VALUES createdAt   = 6;
+}
+
+message GetUsersRequest {
+    optional int32  page   = 1;
+    optional int32  limit  = 2;
+    optional string search = 3;
+    repeated int32  ids    = 4;
+    optional SortingUsers orderBy = 6;
+}
+
+message UserResponse {
+    User user = 1;
+}
+
+message GetUsersResponse {
+    int32         count = 1;
+    repeated User users = 2;
+}
+
+message GetUserRequest {
+    optional int32 id = 1;
+    optional string email = 2;
+    optional string phone = 3;
+}
+
+message CreateUserRequest { 
+    optional string firstName   = 1;
+    optional string lastName    = 2;
+    optional string email       = 3;
+    optional string password    = 5;
+
+    string     phone = 4;
+    USER_ROLES role  = 6;
+}
+
+message UpdateUserRequest {
+    optional int32      id          = 1; 
+    optional string     firstName   = 2;
+    optional string     lastName    = 3;
+    optional string     email       = 4;
+    optional string     phone       = 5;
+    optional string     password    = 6;
+    optional USER_ROLES role        = 7;
+    optional int32      totalOrders = 8;
+}
+
+service UsersService {
+    rpc GetUsers(GetUsersRequest)    returns (GetUsersResponse);
+    rpc GetUser(GetUserRequest)      returns (UserResponse);
+    rpc CreateUser(CreateUserRequest)  returns (UserResponse);
+    rpc UpdateUser(UpdateUserRequest)   returns (UserResponse);
+    rpc DeleteUser(constants.GetByIdRequest)   returns (constants.SuccessResponse);
+}
+
+
+// Reviews
+message Review {
+    int32 id = 1;
+    int32 rating = 2;
+    string text = 3;
+    int32 userId = 4;
+    optional User user = 5;
+    int32 productId = 6;
+    optional string createdAt = 7;
+    optional string updatedAt = 8;
+}
+
+message CreateReviewRequest {
+    string text  = 2;
+    int32 rating    = 1;
+    int32 userId    = 3;
+    int32 productId = 4;
+}
+
+message UpdateReviewRequest {
+    int32 id = 1;
+    optional int32 rating = 2;
+    optional string text = 3;
+    optional int32 userId = 4;
+    optional int32 productId = 5;
+}
+
+message SortingReviews {
+    optional constants.SORTING_VALUES id        = 1; 
+    optional constants.SORTING_VALUES rating    = 2;
+    optional constants.SORTING_VALUES createdAt = 4;
+}
+
+message GetReviewsRequest {
+    int32 page = 1;
+    int32 limit = 2;
+    optional string search = 3;
+    optional int32 productId = 4;
+    optional int32 userId = 5;
+    optional SortingReviews orderBy = 6;
+}
+
+message GetReviewsResponse {
+    int32 count = 1;
+    repeated Review reviews = 2;
+}
+
+message ReviewsResponse {
+    Review review = 1;
+}
+
+service ReviewsService {
+    rpc GetReviews   (GetReviewsRequest)   returns (GetReviewsResponse);
+    rpc CreateReview (CreateReviewRequest) returns (ReviewsResponse);
+    rpc UpdateReview (UpdateReviewRequest) returns (ReviewsResponse);
+    rpc DeleteReview (constants.GetByIdRequest)      returns (constants.SuccessResponse);
+}

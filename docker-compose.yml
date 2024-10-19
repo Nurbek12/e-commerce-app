@@ -1,0 +1,22 @@
+services:
+  client:
+
+  redis:
+
+  gateway:
+  
+  postgres:
+
+  auth-service:
+  
+  users-service:
+    
+  orders-service:
+
+  product-service:
+
+  payments-service:
+
+  statistics-service:
+
+  notification-service:

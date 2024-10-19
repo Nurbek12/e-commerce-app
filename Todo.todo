@@ -1,0 +1,42 @@
+[-] Fix Bug orderBy with enum proto
+[+/fix] Develop Statististics service
+[+/] Add Auth In gateway with guard (need add otp)
+[+/-] Spilt micorservice options in libs / Optimise
+[-] Optimise services
+[-] Integration with telegram bot
+
+[+] Replace new Protoc build // https://medium.com/@baarthomas/building-a-messaging-microservice-with-grpc-and-nestjs-7a3720db4c60
+[+] Create Query Dtos
+[+] Fix create images service
+
+[-x] Add nest-prisma
+
+
+[-] Integration with payme api
+[-] Integration with sms api
+[-] Add Chat system
+
+
+=== ROADMAP ===
+
+// BACKEND
+-> DEVELOPMENT
+-> TESTING
+-> DOCKERIZE
+-> CI/CD
+
+// FRONTEND
+-> FIGMA UI UX
+-> SITE
+-> ADMIN
+-> TG WEB APP
+-> POS // IN FETAURED SLICED DESIGN
+-> DOCKERIZE
+-> UNITESTING
+-> CI/CD
+
+-> DEPLOYMENT
+
+---> NEED WRITE IN EXPRESS
+
+=== FINISH ===

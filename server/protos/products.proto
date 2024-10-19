@@ -1,0 +1,159 @@
+syntax = "proto3";
+
+package products;
+
+import "constants.proto";
+
+message Product {
+    int32  id          = 1;
+    string name        = 2;
+    string description = 3;
+    int32 discount     = 4;
+    int32 sold         = 5;
+    int32 count        = 6;
+    float rate         = 7;
+    float price        = 8;
+    int32 categoryId   = 9;
+    string slug        = 10;
+    int32 reviews      = 11;
+    Category category  = 12;
+
+    repeated ProductImage images = 13;
+    optional string createdAt = 14;
+    optional string updatedAt = 15;
+}
+
+message SortingProducts {
+    optional constants.SORTING_VALUES id        = 1; 
+    optional constants.SORTING_VALUES name      = 2;
+    optional constants.SORTING_VALUES discount  = 3;
+    optional constants.SORTING_VALUES sold      = 4;
+    optional constants.SORTING_VALUES count     = 5;
+    optional constants.SORTING_VALUES rate      = 6;
+    optional constants.SORTING_VALUES price     = 7;
+    optional constants.SORTING_VALUES createdAt = 8;
+}
+
+message CreateProductRequest {
+    string name = 1;
+    string description = 2;
+    optional int32 discount = 3;
+    int32 count = 4;   
+    float price = 5;
+    int32 categoryId = 6;
+}
+
+message UpdateProductRequest {
+    int32 id = 1;
+    optional string name = 2;
+    optional string description = 3;
+    optional int32 discount = 4;
+    optional int32 count = 5;   
+    optional float price = 6; 
+    optional int32 categoryId = 7;
+}
+
+message GetProductBySlug {
+    string slug = 1;
+}
+
+message ProductResponse {
+    Product product = 1;
+}
+
+message GetProductsRequest {
+    optional int32  page = 1;
+    optional int32  limit = 2;
+    optional string search = 3;
+    optional int32 categoryId = 4;
+    repeated int32 ids = 5;
+    optional SortingProducts orderBy = 6;
+}
+
+message GetProductsResponse {
+    int32 count = 1;
+    repeated Product products = 2;
+}
+
+message ProductImage {
+    int32 id = 1;
+    int32  size = 2;
+    string name = 3;
+    optional int32  productId = 4;
+}
+
+message CreateProductImage {
+    int32  size = 2;
+    string name = 3;
+    int32  productId = 4;
+}
+
+message CreateProductImages {
+    repeated CreateProductImage images = 1;
+}
+
+message ProductImages {
+    repeated ProductImage images = 1;
+}
+
+service ProductsService {
+    rpc GetProduct (GetProductBySlug) returns (ProductResponse);
+    rpc GetProducts (GetProductsRequest) returns (GetProductsResponse);
+    rpc CreateProduct (CreateProductRequest) returns (ProductResponse);
+    rpc UpdateProduct (UpdateProductRequest) returns (ProductResponse);
+    rpc DeleteProduct (constants.GetByIdRequest) returns (constants.SuccessResponse);
+
+    rpc CreateImage (ProductImage) returns (ProductImage);
+    rpc CreateImages (CreateProductImages) returns (ProductImages);
+    rpc DeleteImage (constants.GetByIdRequest) returns (constants.SuccessResponse);
+}
+
+
+message Category {
+    int32 id = 1;
+    string name = 3;
+    string image = 4;
+    string description = 5;
+    optional int32 parentId = 6;
+    repeated Category childrens = 7;
+    optional string createdAt = 8;
+    optional string updatedAt = 9;
+}
+
+message CategoryResponse {
+    Category category = 1;
+}
+
+message CreateCategoryRequest {
+    string name = 1;
+    string image = 2;
+    string description = 3;
+    optional int32 parentId = 4;
+}
+
+message UpdateCategoryRequest {
+    int32 id = 1;
+    optional string name = 2;
+    optional string image = 3;
+    optional string description = 4;
+    optional int32 parentId = 5;
+}
+
+message GetCategoriesRequest {
+    int32 page = 1;
+    int32 limit = 2;
+    optional string search = 3;
+    optional int32 parentId = 4;
+}
+
+message GetCategoriesResponse {
+    int32 count = 1;
+    repeated Category categories = 2;
+}
+
+service CategoriesService {
+    rpc GetCategories (GetCategoriesRequest) returns (GetCategoriesResponse);
+    rpc CreateCategory (CreateCategoryRequest) returns (CategoryResponse);
+    rpc UpdateCategory (UpdateCategoryRequest) returns (CategoryResponse);
+    rpc DeleteCategory (constants.GetByIdRequest) returns (constants.SuccessResponse);
+}

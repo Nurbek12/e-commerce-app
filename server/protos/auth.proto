@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+package auth;
+
+import "users.proto";
+
+message SendOTPRequest {
+    string phone = 1;
+}
+
+message VerfyOTPRequest {
+    string phone = 1;
+    string code  = 2;
+}
+
+message LoginRequest {
+    string email    = 1;
+    string password = 2;
+}
+
+message RefreshRequest {
+    string refreshToken = 1;
+}
+
+message TokenResponse {
+    string accessToken  = 1;
+    string refreshToken = 2;
+}
+
+message LoginResponse {
+    string error = 1;
+    users.User user   = 2;
+    TokenResponse tokens = 3;
+}
+
+message AuthResponse {
+    string error = 1;
+    bool success = 2;
+}
+
+service AuthService {
+    rpc SendOTP(SendOTPRequest)  returns (AuthResponse);
+    rpc VerifyOTP(VerfyOTPRequest) returns (LoginResponse);
+    rpc Login(LoginRequest)  returns (LoginResponse);
+    rpc Register(users.CreateUserRequest)  returns (AuthResponse);
+    rpc RefreshToken(RefreshRequest) returns (TokenResponse);
+}

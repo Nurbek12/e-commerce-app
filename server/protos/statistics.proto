@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+package statistics;
+
+message Statistic {
+    int32  id      = 1;
+    string date    = 2;
+    int32  day     = 3;
+    int32  month   = 4;
+    int32  year    = 5;
+    int32  amount  = 6;
+    int32  orders  = 7;
+    int32  users   = 8;
+    int32  reports = 9;
+
+    optional string createdAt = 10;
+    optional string updatedAt = 11;
+}
+
+message GetStatisticsRequest {
+    string date = 2;
+}
+
+message SetStatisticsRequest {
+    string date = 2;
+
+    optional int32 amount  = 6;
+    optional int32 orders  = 7;
+    optional int32 users   = 8;
+    optional int32 reports = 9;
+}
+
+message Statistics {
+    repeated Statistic statistics = 1;
+}
+
+service StatisticService {
+    rpc GetStatistics(GetStatisticsRequest) returns (Statistics);
+    rpc SetStatistics(SetStatisticsRequest) returns (Statistic);
+}

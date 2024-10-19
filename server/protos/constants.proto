@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package constants;
+
+enum SORTING_VALUES {
+    asc  = 0;
+    desc = 1;
+}
+
+message Empty {}
+
+message GetByIdRequest {
+    int32 id = 1;
+}
+
+message SuccessResponse {
+    bool success = 1;
+}

@@ -1,0 +1,1 @@
+export type { Category, Product, ProductImage } from '../../server/node_modules/@prisma/client-products'

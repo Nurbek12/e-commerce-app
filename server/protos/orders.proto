@@ -1,0 +1,102 @@
+syntax = "proto3";
+
+package orders;
+
+import "users.proto";
+import "products.proto";
+import "constants.proto";
+
+enum STATUS {
+    PENDING = 0;
+    PROCESSING = 1;
+    DELIVERED = 2;
+    CANCELED = 3;
+}
+
+message Order {
+    int32 id = 1;
+    int32 userId = 2;
+    users.User user = 3;
+    STATUS status = 4;
+    float totalPrice = 5;
+    string deliveryTime = 6;
+    string address = 7;
+    optional float latitude = 8;
+    optional float longitude = 9;
+    repeated OrderItem items = 10;
+    optional string createdAt = 11;
+    optional string updatedAt = 12;
+}
+
+message OrderItem {
+    int32 id = 1;
+    int32 orderId = 2;
+    int32 productId = 3;
+    int32 quantity = 4;
+    float price = 5;
+    optional products.Product product = 6;
+    optional string createdAt = 7;
+    optional string updatedAt = 8;
+}
+
+message CreateOrder {
+    int32 userId = 1;
+    STATUS status = 2;
+    float totalPrice = 3;
+    string address = 4;
+    optional float latitude = 5;
+    optional float longitude = 6;
+}
+
+message CreateOrderItem {
+    int32 productId = 1;
+    int32 quantity = 2;
+    float price = 3;
+}
+
+message CreateOrderRequest {
+    int32 userId = 1;
+    float totalPrice = 2;
+    string address = 3;
+    optional float latitude = 4;
+    optional float longitude = 5;
+    repeated CreateOrderItem items = 6;
+}
+
+message UpdateOrderRequest {
+    int32 id = 1;
+    STATUS status = 2;
+}
+
+message SortingOrders {
+    optional constants.SORTING_VALUES id         = 1;
+    optional constants.SORTING_VALUES totalPrice = 2;
+    optional constants.SORTING_VALUES status     = 3;
+    optional constants.SORTING_VALUES createdAt  = 4;
+}
+
+message GetOrdersRequest {
+    int32 page = 1;
+    int32 limit = 2;
+    optional string date = 3;
+    optional int32 userId = 4;
+    optional STATUS status = 5;
+    optional SortingOrders orderBy = 6;
+}
+
+message GetOrdersResponse {
+    int32 count = 1;
+    repeated Order orders = 2;
+}
+
+message OrderResponse {
+    Order order = 1;
+}
+
+service OrdersService {
+    rpc GetOrder (constants.GetByIdRequest) returns (OrderResponse);
+    rpc GetOrders (GetOrdersRequest) returns (GetOrdersResponse);
+    rpc CreateOrder (CreateOrderRequest) returns (OrderResponse);
+    rpc UpdateOrder (UpdateOrderRequest) returns (OrderResponse);
+    rpc DeleteOrder (constants.GetByIdRequest) returns (constants.SuccessResponse);
+}

@@ -1,0 +1,39 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../../../../node_modules/@prisma/client-payments"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// enums TransactionState {
+//   PENDING
+// CREATED
+// PAID
+// CANCELED
+// }
+// https://github.com/umaralimuminjonov/payme-integration-example
+// https://github.com/bek-shoyatbek/payme-uzum-click-integration-example
+
+model Transactions {
+  id            Int      @id @default(autoincrement())
+  userId        Int
+  orderId       Int
+  transactionId Int      @unique
+  reason        Int?
+  state         Int?
+  amount        Int
+  performTime   Int      @default(0)
+  cancelTime    Int      @default(0)
+  status        String   @default("PENDING")
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
